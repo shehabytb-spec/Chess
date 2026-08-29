@@ -34,22 +34,17 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.7);
         }
 
-        /* نافذة الترقية */
-        .promotion-options {
-            display: flex; justify-content: space-around; margin-top: 20px; gap: 10px;
-        }
+        .promotion-options { display: flex; justify-content: space-around; margin-top: 20px; gap: 10px; }
         .promotion-btn {
             background: var(--bg-primary); border: 2px solid var(--accent-green-bright);
             border-radius: 8px; font-size: 2.5rem; cursor: pointer; padding: 10px;
             flex: 1; transition: 0.2s; color: var(--text-main);
         }
-        .promotion-btn:hover {
-            background: var(--accent-green-bright); transform: scale(1.1); color: #000;
-        }
+        .promotion-btn:hover { background: var(--accent-green-bright); transform: scale(1.1); color: #000; }
 
-        .border-win { border-color: #2ecc71 !important; box-shadow: 0 0 25px rgba(46, 204, 113, 0.4); }
-        .border-loss { border-color: #e74c3c !important; box-shadow: 0 0 25px rgba(231, 76, 60, 0.4); }
-        .border-draw { border-color: #f1c40f !important; box-shadow: 0 0 25px rgba(241, 196, 15, 0.4); }
+        .border-win { border-color: #2ecc71 !important; box-shadow: 0 0 25px rgba(46, 204, 113, 0.5); }
+        .border-loss { border-color: #e74c3c !important; box-shadow: 0 0 25px rgba(231, 76, 60, 0.5); }
+        .border-draw { border-color: #f1c40f !important; box-shadow: 0 0 25px rgba(241, 196, 15, 0.5); }
 
         .btn {
             width: 100%; padding: 12px; border: none; border-radius: 8px;
@@ -65,55 +60,45 @@
         .side-panel { background-color: var(--bg-secondary); border-radius: 12px; padding: 20px; width: 300px; border: 1px solid rgba(46, 204, 113, 0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
         .side-panel h3 { margin-bottom: 15px; font-size: 1.1rem; color: var(--accent-green-bright); border-bottom: 1px solid var(--accent-green); padding-bottom: 5px; }
 
-        .move-history-container { height: 250px; overflow-y: auto; background: var(--bg-primary); border-radius: 6px; padding: 5px; }
+        .move-history-container { height: 200px; overflow-y: auto; background: var(--bg-primary); border-radius: 6px; padding: 5px; }
         .move-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.9rem; }
         .move-table th { background-color: var(--accent-green); color: white; padding: 6px; }
         .move-table td { padding: 6px; border-bottom: 1px solid #2c3e50; }
 
-        .control-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px; }
-        .control-group label { font-size: 0.9rem; color: var(--text-muted); }
-        .control-group select { padding: 8px; border-radius: 6px; background: var(--bg-primary); color: white; border: 1px solid var(--accent-green); }
+        .control-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 6px; }
+        .control-group label { font-size: 0.85rem; color: var(--text-muted); }
+        .control-group select, .control-group input { padding: 8px; border-radius: 6px; background: var(--bg-primary); color: white; border: 1px solid var(--accent-green); }
 
         .board-container { display: flex; flex-direction: column; align-items: center; justify-content: center; }
         #board { width: 480px; max-width: 85vw; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); border: 3px solid var(--accent-green); }
         
+        /* مؤشرات التظليل */
         .highlight-square { 
             background: radial-gradient(circle, rgba(46, 204, 113, 0.6) 0%, rgba(39, 174, 96, 0.3) 100%) !important;
             box-shadow: inset 0 0 8px #2ecc71 !important;
         }
-        
         .highlight-move { 
             box-shadow: inset 0 0 10px 3px rgba(46, 204, 113, 0.8), 0 0 5px rgba(46, 204, 113, 0.5) !important;
             cursor: pointer; 
         }
-
         .highlight-capture { 
             background: radial-gradient(circle, rgba(231, 76, 60, 0.7) 0%, rgba(192, 57, 43, 0.4) 100%) !important;
             box-shadow: inset 0 0 12px #e74c3c, 0 0 8px #e74c3c !important;
             cursor: pointer; 
         }
-
         .highlight-check {
             background: radial-gradient(circle, rgba(139, 0, 0, 0.85) 0%, rgba(75, 0, 0, 0.95) 100%) !important;
             box-shadow: inset 0 0 15px 4px #ff0000, 0 0 20px #8b0000 !important;
-            animation: pulse-check 1.2s infinite alternate;
         }
-
         .highlight-checkmate {
             background: radial-gradient(circle, rgba(255, 20, 147, 0.85) 0%, rgba(199, 21, 133, 0.95) 100%) !important;
             box-shadow: inset 0 0 18px 5px #ff69b4, 0 0 25px #ff1493 !important;
-            animation: pulse-checkmate 1s infinite alternate;
         }
 
-        @keyframes pulse-check {
-            from { box-shadow: inset 0 0 12px #ff0000, 0 0 15px #8b0000; }
-            to { box-shadow: inset 0 0 20px #ff3333, 0 0 28px #ff0000; }
-        }
-
-        @keyframes pulse-checkmate {
-            from { box-shadow: inset 0 0 15px #ff69b4, 0 0 20px #ff1493; }
-            to { box-shadow: inset 0 0 25px #ffb6c1, 0 0 35px #ff1493; }
-        }
+        /* العدادات */
+        .timer-container { display: flex; justify-content: space-between; width: 100%; margin-bottom: 10px; gap: 15px; }
+        .timer-box { background: var(--bg-secondary); border: 1px solid var(--accent-green); padding: 8px 15px; border-radius: 8px; font-size: 1.1rem; font-weight: bold; flex: 1; text-align: center; }
+        .timer-active { border-color: var(--accent-green-bright); box-shadow: 0 0 10px rgba(46, 204, 113, 0.4); }
 
         .status-bar { margin-top: 15px; background-color: var(--bg-secondary); padding: 12px 25px; border-radius: 8px; font-size: 1.1rem; text-align: center; border: 1px solid var(--accent-green); width: 100%; font-weight: bold; }
     </style>
@@ -137,20 +122,18 @@
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
                 تسجيل الدخول بحساب جوجل
             </button>
-            <button class="btn btn-guest" onclick="playAsGuest()">الاستمرار كضيف (ذكاء اصطناعي قوي)</button>
+            <button class="btn btn-guest" onclick="playAsGuest()">الاستمرار كضيف</button>
         </div>
     </div>
 
-    <!-- نافذة اختيار الترقية -->
     <div id="promotion-overlay" class="overlay" style="display: none;">
         <div class="promotion-card">
             <h3 style="color: var(--accent-green-bright); margin-bottom: 10px;">اختر قطعة الترقية</h3>
-            <p style="color: var(--text-muted); font-size: 0.9rem;">إلى أي قطعة تريد ترقية البيدق؟</p>
             <div class="promotion-options">
-                <button class="promotion-btn" onclick="selectPromotion('q')" title="وزير">♛</button>
-                <button class="promotion-btn" onclick="selectPromotion('r')" title="طابية / قلعة">♜</button>
-                <button class="promotion-btn" onclick="selectPromotion('n')" title="حصان">♞</button>
-                <button class="promotion-btn" onclick="selectPromotion('b')" title="فيل">♝</button>
+                <button class="promotion-btn" onclick="selectPromotion('q')">♛</button>
+                <button class="promotion-btn" onclick="selectPromotion('r')">♜</button>
+                <button class="promotion-btn" onclick="selectPromotion('n')">♞</button>
+                <button class="promotion-btn" onclick="selectPromotion('b')">♝</button>
             </div>
         </div>
     </div>
@@ -181,12 +164,24 @@
                     <option value="black">الأسود (الكمبيوتر يبتدئ)</option>
                 </select>
             </div>
+            <div class="control-group">
+                <label>وقت كل لاعب (بالدقائق):</label>
+                <input type="number" id="time-limit" value="5" min="1" max="60" onchange="startNewGame()">
+            </div>
+            <div class="control-group">
+                <label>الوقت المضاف لكل نقلة (ثواني):</label>
+                <input type="number" id="time-increment" value="3" min="0" max="30" onchange="startNewGame()">
+            </div>
             <button class="btn btn-action" onclick="startNewGame()">مباراة جديدة 🔄</button>
         </div>
 
         <div class="board-container">
+            <div class="timer-container">
+                <div class="timer-box" id="timer-black">الأسود: 05:00</div>
+                <div class="timer-box" id="timer-white">الأبيض: 05:00</div>
+            </div>
             <div id="board"></div>
-            <div class="status-bar" id="status">سجل الدخول أو ادخل كضيف للبدء</div>
+            <div class="status-bar" id="status">جاهز للبدء</div>
         </div>
 
         <div class="side-panel">
@@ -216,15 +211,17 @@
         var selectedSquare = null;
         var pendingMove = null;
         var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
         var pieceValues = { p: 10, r: 50, n: 30, b: 35, q: 90, k: 1000 };
+
+        // العدادات
+        var whiteTime = 300, blackTime = 300;
+        var timerInterval = null;
 
         function playSound(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             var osc = audioCtx.createOscillator();
             var gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            osc.connect(gain); gain.connect(audioCtx.destination);
 
             if (type === 'move') {
                 osc.frequency.setValueAtTime(300, audioCtx.currentTime);
@@ -232,6 +229,12 @@
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+            } else if (type === 'blocked') { // صوت النقر على قطعة لا تتحرك
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.15);
             } else if (type === 'win') {
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(400, audioCtx.currentTime);
@@ -250,23 +253,14 @@
             } else if (type === 'draw') {
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(350, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(350, audioCtx.currentTime + 0.2);
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
             }
         }
 
-        function playAsGuest() {
-            document.getElementById('auth-overlay').style.display = 'none';
-            startNewGame();
-        }
-
-        function loginGoogle() {
-            document.getElementById('auth-overlay').style.display = 'none';
-            alert("تم تسجيل الدخول بنجاح!");
-            startNewGame();
-        }
+        function playAsGuest() { document.getElementById('auth-overlay').style.display = 'none'; startNewGame(); }
+        function loginGoogle() { document.getElementById('auth-overlay').style.display = 'none'; startNewGame(); }
 
         function removeHighlights() {
             $('#board .square-55d63').removeClass('highlight-square highlight-move highlight-capture highlight-check highlight-checkmate');
@@ -274,8 +268,6 @@
 
         function showPossibleMoves(square) {
             var moves = game.moves({ square: square, verbose: true });
-            if (moves.length === 0) return;
-
             $('#board .square-' + square).addClass('highlight-square');
 
             for (var i = 0; i < moves.length; i++) {
@@ -293,8 +285,8 @@
 
             var turn = game.turn();
             var kingSquare = null;
-
             var boardState = game.board();
+
             for (var r = 0; r < 8; r++) {
                 for (var c = 0; c < 8; c++) {
                     var p = boardState[r][c];
@@ -324,9 +316,7 @@
             }
 
             var highlightClass = game.in_checkmate() ? 'highlight-checkmate' : 'highlight-check';
-
             if (kingSquare) $('#board .square-' + kingSquare).addClass(highlightClass);
-
             for (var i = 0; i < attackerSquares.length; i++) {
                 $('#board .square-' + attackerSquares[i]).addClass(highlightClass);
             }
@@ -344,23 +334,33 @@
                 if (userColor === 'black' && game.turn() === 'w') return;
             }
 
+            // إلغاء التحديد بالنقر على نفس القطعة مجدداً
+            if (selectedSquare === square) {
+                selectedSquare = null;
+                removeHighlights();
+                highlightCheckEffects();
+                return;
+            }
+
             if (selectedSquare === null) {
-                if (piece && ((game.turn() === 'w' && piece.color === 'w') || (game.turn() === 'b' && piece.color === 'b'))) {
+                if (piece && piece.color === game.turn()) {
+                    var moves = game.moves({ square: square });
+                    if (moves.length === 0) {
+                        playSound('blocked'); // صوت عند عدم وجود حركات
+                        return;
+                    }
                     selectedSquare = square;
                     removeHighlights();
                     highlightCheckEffects();
                     showPossibleMoves(square);
                 }
             } else {
-                // التحقق من حالة الترقية أولاً
                 var movingPiece = game.get(selectedSquare);
                 var isPromotion = movingPiece && movingPiece.type === 'p' && (square.charAt(1) === '8' || square.charAt(1) === '1');
 
                 if (isPromotion) {
                     var moves = game.moves({ square: selectedSquare, verbose: true });
-                    var validMove = moves.some(m => m.to === square);
-
-                    if (validMove) {
+                    if (moves.some(m => m.to === square)) {
                         pendingMove = { from: selectedSquare, to: square };
                         document.getElementById('promotion-overlay').style.display = 'flex';
                         return;
@@ -383,6 +383,10 @@
             var move = game.move(moveObj);
 
             if (move !== null) {
+                var inc = parseInt($('#time-increment').val()) || 0;
+                if (game.turn() === 'b') whiteTime += inc; else blackTime += inc;
+                updateTimerDisplay();
+
                 board.position(game.fen());
                 playSound('move');
                 selectedSquare = null;
@@ -405,18 +409,15 @@
         }
 
         function evaluateBoard(gameInstance) {
-            var totalEvaluation = 0;
+            var total = 0;
             var boardState = gameInstance.board();
             for (var r = 0; r < 8; r++) {
                 for (var c = 0; c < 8; c++) {
                     var p = boardState[r][c];
-                    if (p) {
-                        var val = pieceValues[p.type] || 0;
-                        totalEvaluation += (p.color === 'w' ? val : -val);
-                    }
+                    if (p) total += (p.color === 'w' ? pieceValues[p.type] : -pieceValues[p.type]);
                 }
             }
-            return totalEvaluation;
+            return total;
         }
 
         function makeAiMove() {
@@ -429,26 +430,21 @@
             for (var i = 0; i < possibleMoves.length; i++) {
                 var move = possibleMoves[i];
                 game.move(move);
-
                 var boardValue = evaluateBoard(game);
                 if (game.in_checkmate()) boardValue = game.turn() === 'b' ? 999999 : -999999;
-
                 game.undo();
 
                 if (game.turn() === 'b') {
-                    if (boardValue < bestValue) {
-                        bestValue = boardValue;
-                        bestMove = move;
-                    }
+                    if (boardValue < bestValue) { bestValue = boardValue; bestMove = move; }
                 } else {
-                    if (boardValue > bestValue) {
-                        bestValue = boardValue;
-                        bestMove = move;
-                    }
+                    if (boardValue > bestValue) { bestValue = boardValue; bestMove = move; }
                 }
             }
 
             if (!bestMove) bestMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+
+            var inc = parseInt($('#time-increment').val()) || 0;
+            if (game.turn() === 'w') whiteTime += inc; else blackTime += inc;
 
             game.move(bestMove);
             board.position(game.fen());
@@ -457,10 +453,39 @@
             updateStatus();
         }
 
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(function () {
+                if (game.game_over()) { clearInterval(timerInterval); return; }
+
+                if (game.turn() === 'w') {
+                    whiteTime--;
+                    if (whiteTime <= 0) { clearInterval(timerInterval); showGameOverModal('time', 'b'); }
+                } else {
+                    blackTime--;
+                    if (blackTime <= 0) { clearInterval(timerInterval); showGameOverModal('time', 'w'); }
+                }
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            var wMin = Math.floor(whiteTime / 60), wSec = whiteTime % 60;
+            var bMin = Math.floor(blackTime / 60), bSec = blackTime % 60;
+
+            $('#timer-white').text('الأبيض: ' + (wMin < 10 ? '0' : '') + wMin + ':' + (wSec < 10 ? '0' : '') + wSec);
+            $('#timer-black').text('الأسود: ' + (bMin < 10 ? '0' : '') + bMin + ':' + (bSec < 10 ? '0' : '') + bSec);
+
+            if (game.turn() === 'w') {
+                $('#timer-white').addClass('timer-active'); $('#timer-black').removeClass('timer-active');
+            } else {
+                $('#timer-black').addClass('timer-active'); $('#timer-white').removeClass('timer-active');
+            }
+        }
+
         function updateStatus() {
             var status = '';
             var moveColor = game.turn() === 'b' ? 'الأسود' : 'الأبيض';
-
             highlightCheckEffects();
 
             if (game.in_checkmate()) {
@@ -478,10 +503,11 @@
             updateMoveTable();
         }
 
-        function showGameOverModal(reason) {
+        function showGameOverModal(reason, timeWinner) {
+            clearInterval(timerInterval);
             var mode = $('#game-mode').val();
             var userColor = $('#player-color').val();
-            var winner = game.turn() === 'w' ? 'black' : 'white';
+            var winner = timeWinner || (game.turn() === 'w' ? 'black' : 'white');
             
             var history = game.history();
             var totalMoves = history.length;
@@ -490,24 +516,29 @@
 
             var $card = $('#game-over-card');
             $card.removeClass('border-win border-loss border-draw');
-
             var title = '', body = '';
 
             if (reason === 'draw') {
                 $card.addClass('border-draw');
                 title = 'تعادل!';
-                body = 'انتهت المباراة بالتعادل بـ ' + totalMoves + ' نقلة!';
+                body = 'انتهت المباراة بالتعادل بعد ' + totalMoves + ' نقلة!';
                 playSound('draw');
+            } else if (reason === 'time') {
+                if ((winner === 'w' && userColor === 'white') || (winner === 'b' && userColor === 'black')) {
+                    $card.addClass('border-win'); title = '🎉 فوز بالوقت!'; body = 'لقد فزت بالمباراة بنفاذ وقت الخصم!'; playSound('win');
+                } else {
+                    $card.addClass('border-loss'); title = 'خسارة بالوقت!'; body = 'لقد خسرت المباراة بسبب انتهاد وقتك!'; playSound('loss');
+                }
             } else if (mode === 'ai') {
                 if ((winner === 'white' && userColor === 'white') || (winner === 'black' && userColor === 'black')) {
                     $card.addClass('border-win');
-                    title = '🎉 مبروك، انتصار ساحق!';
-                    body = 'لقد هزمت الذكاء الاصطناعي الصعب جداً بعد ' + totalMoves + ' نقلة بـ كش مات حاسمة!';
+                    title = '🎉 لقد كسبت المباراه!';
+                    body = 'لقد خسرت بعد ' + totalMoves + ' نقلة بـ كش مات (انتصار ساحق ومستحق!)';
                     playSound('win');
                 } else {
                     $card.addClass('border-loss');
                     title = 'لقد خسرت المباراة!';
-                    body = 'تمكن الذكاء الاصطناعي الصعب من إلحاق الهزيمة بك بـ كش مات بعد ' + totalMoves + ' نقلة.';
+                    body = 'لقد خسرت بعد ' + totalMoves + ' نقلة بـ كش مات';
                     playSound('loss');
                 }
             } else {
@@ -533,9 +564,7 @@
             var html = '';
             for (var i = 0; i < history.length; i += 2) {
                 var moveNum = (i / 2) + 1;
-                var whiteMove = history[i] || '';
-                var blackMove = history[i + 1] || '';
-                html += '<tr><td>' + moveNum + '</td><td>' + whiteMove + '</td><td>' + blackMove + '</td></tr>';
+                html += '<tr><td>' + moveNum + '</td><td>' + (history[i] || '') + '</td><td>' + (history[i + 1] || '') + '</td></tr>';
             }
             $('#move-table-body').html(html);
         }
@@ -545,6 +574,13 @@
             selectedSquare = null;
             pendingMove = null;
             removeHighlights();
+
+            var mins = parseInt($('#time-limit').val()) || 5;
+            whiteTime = mins * 60;
+            blackTime = mins * 60;
+            updateTimerDisplay();
+            startTimer();
+
             var userColor = $('#player-color').val();
             var mode = $('#game-mode').val();
 

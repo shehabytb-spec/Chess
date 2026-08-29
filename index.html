@@ -25,7 +25,7 @@
 
         .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 30, 0.95);
+            background: rgba(15, 23, 30, 0.92);
             display: flex; justify-content: center; align-items: center; z-index: 999;
         }
         .auth-card, .game-over-card, .promotion-card {
@@ -42,9 +42,9 @@
         }
         .promotion-btn:hover { background: var(--accent-green-bright); transform: scale(1.1); color: #000; }
 
-        .border-win { border-color: #2ecc71 !important; box-shadow: 0 0 25px rgba(46, 204, 113, 0.5); }
-        .border-loss { border-color: #e74c3c !important; box-shadow: 0 0 25px rgba(231, 76, 60, 0.5); }
-        .border-draw { border-color: #f1c40f !important; box-shadow: 0 0 25px rgba(241, 196, 15, 0.5); }
+        .border-win { border-color: #2ecc71 !important; box-shadow: 0 0 25px rgba(46, 204, 113, 0.6); }
+        .border-loss { border-color: #e74c3c !important; box-shadow: 0 0 25px rgba(231, 76, 60, 0.6); }
+        .border-draw { border-color: #f1c40f !important; box-shadow: 0 0 25px rgba(241, 196, 15, 0.6); }
 
         .btn {
             width: 100%; padding: 12px; border: none; border-radius: 8px;
@@ -72,33 +72,34 @@
         .board-container { display: flex; flex-direction: column; align-items: center; justify-content: center; }
         #board { width: 480px; max-width: 85vw; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); border: 3px solid var(--accent-green); }
         
-        /* مؤشرات التظليل */
+        /* مؤشرات التظليل الدقيقة */
         .highlight-square { 
             background: radial-gradient(circle, rgba(46, 204, 113, 0.6) 0%, rgba(39, 174, 96, 0.3) 100%) !important;
             box-shadow: inset 0 0 8px #2ecc71 !important;
         }
         .highlight-move { 
-            box-shadow: inset 0 0 10px 3px rgba(46, 204, 113, 0.8), 0 0 5px rgba(46, 204, 113, 0.5) !important;
+            background: radial-gradient(circle, rgba(46, 204, 113, 0.5) 20%, transparent 70%) !important;
+            box-shadow: inset 0 0 10px 2px rgba(46, 204, 113, 0.8) !important;
             cursor: pointer; 
         }
         .highlight-capture { 
-            background: radial-gradient(circle, rgba(231, 76, 60, 0.7) 0%, rgba(192, 57, 43, 0.4) 100%) !important;
-            box-shadow: inset 0 0 12px #e74c3c, 0 0 8px #e74c3c !important;
+            background: radial-gradient(circle, rgba(231, 76, 60, 0.8) 0%, rgba(192, 57, 43, 0.5) 100%) !important;
+            box-shadow: inset 0 0 12px #e74c3c !important;
             cursor: pointer; 
         }
         .highlight-check {
-            background: radial-gradient(circle, rgba(139, 0, 0, 0.85) 0%, rgba(75, 0, 0, 0.95) 100%) !important;
-            box-shadow: inset 0 0 15px 4px #ff0000, 0 0 20px #8b0000 !important;
+            background: radial-gradient(circle, rgba(255, 75, 125, 0.95) 0%, rgba(175, 20, 70, 0.95) 100%) !important;
+            box-shadow: inset 0 0 15px 4px #ff0055, 0 0 20px #ff0055 !important;
         }
         .highlight-checkmate {
-            background: radial-gradient(circle, rgba(255, 20, 147, 0.85) 0%, rgba(199, 21, 133, 0.95) 100%) !important;
-            box-shadow: inset 0 0 18px 5px #ff69b4, 0 0 25px #ff1493 !important;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.9) 0%, rgba(100, 0, 0, 0.95) 100%) !important;
+            box-shadow: inset 0 0 20px 6px #ff0000, 0 0 25px #ff0000 !important;
         }
 
         /* العدادات */
         .timer-container { display: flex; justify-content: space-between; width: 100%; margin-bottom: 10px; gap: 15px; }
         .timer-box { background: var(--bg-secondary); border: 1px solid var(--accent-green); padding: 8px 15px; border-radius: 8px; font-size: 1.1rem; font-weight: bold; flex: 1; text-align: center; }
-        .timer-active { border-color: var(--accent-green-bright); box-shadow: 0 0 10px rgba(46, 204, 113, 0.4); }
+        .timer-active { border-color: var(--accent-green-bright); box-shadow: 0 0 10px rgba(46, 204, 113, 0.5); }
 
         .status-bar { margin-top: 15px; background-color: var(--bg-secondary); padding: 12px 25px; border-radius: 8px; font-size: 1.1rem; text-align: center; border: 1px solid var(--accent-green); width: 100%; font-weight: bold; }
     </style>
@@ -153,7 +154,7 @@
             <div class="control-group">
                 <label>وضع اللعب:</label>
                 <select id="game-mode" onchange="startNewGame()">
-                    <option value="ai">ضد الذكاء الاصطناعي (صعب جداً)</option>
+                    <option value="ai">ضد الذكاء الاصطناعي الذكي</option>
                     <option value="pvp">لاعب ضد لاعب (شريك)</option>
                 </select>
             </div>
@@ -211,7 +212,74 @@
         var selectedSquare = null;
         var pendingMove = null;
         var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        var pieceValues = { p: 10, r: 50, n: 30, b: 35, q: 90, k: 1000 };
+        var isAiThinking = false;
+
+        // قيم القطع ومصفوفات الموضع للذكاء الاصطناعي
+        var pawnEvalWhite = [
+            [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+            [5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0],
+            [1.0,  1.0,  2.0,  3.0,  3.0,  2.0,  1.0,  1.0],
+            [0.5,  0.5,  1.0,  2.5,  2.5,  1.0,  0.5,  0.5],
+            [0.0,  0.0,  0.0,  2.0,  2.0,  0.0,  0.0,  0.0],
+            [0.5, -0.5, -1.0,  0.0,  0.0, -1.0, -0.5,  0.5],
+            [0.5,  1.0, 1.0,  -2.0, -2.0,  1.0,  1.0,  0.5],
+            [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0]
+        ];
+        var knightEval = [
+            [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0],
+            [-4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0],
+            [-3.0,  0.0,  1.0,  1.5,  1.5,  1.0,  0.0, -3.0],
+            [-3.0,  0.5,  1.5,  2.0,  2.0,  1.5,  0.5, -3.0],
+            [-3.0,  0.0,  1.5,  2.0,  2.0,  1.5,  0.0, -3.0],
+            [-3.0,  0.5,  1.0,  1.5,  1.5,  1.0,  0.5, -3.0],
+            [-4.0, -2.0,  0.0,  0.5,  0.5,  0.0, -2.0, -4.0],
+            [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
+        ];
+        var bishopEvalWhite = [
+            [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0],
+            [-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+            [-1.0,  0.0,  0.5,  1.0,  1.0,  0.5,  0.0, -1.0],
+            [-1.0,  0.5,  0.5,  1.0,  1.0,  0.5,  0.5, -1.0],
+            [-1.0,  0.0,  1.0,  1.0,  1.0,  1.0,  0.0, -1.0],
+            [-1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0, -1.0],
+            [-1.0,  0.5,  0.0,  0.0,  0.0,  0.0,  0.5, -1.0],
+            [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0]
+        ];
+        var rookEvalWhite = [
+            [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+            [0.5,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  0.5],
+            [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+            [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+            [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+            [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+            [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+            [0.0,   0.0,  0.0,  0.5,  0.5,  0.0,  0.0,  0.0]
+        ];
+        var evalQueen = [
+            [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0],
+            [-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+            [-1.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+            [-0.5,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+            [0.0,   0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+            [-1.0,  0.5,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+            [-1.0,  0.0,  0.5,  0.0,  0.0,  0.0,  0.0, -1.0],
+            [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]
+        ];
+        var kingEvalWhite = [
+            [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+            [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+            [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+            [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+            [-2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0],
+            [-1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0],
+            [2.0,  2.0,  0.0,  0.0,  0.0,  0.0,  2.0,  2.0],
+            [2.0,  3.0,  1.0,  0.0,  0.0,  1.0,  3.0,  2.0]
+        ];
+
+        var pawnEvalBlack = pawnEvalWhite.slice().reverse();
+        var bishopEvalBlack = bishopEvalWhite.slice().reverse();
+        var rookEvalBlack = rookEvalWhite.slice().reverse();
+        var kingEvalBlack = kingEvalWhite.slice().reverse();
 
         // العدادات
         var whiteTime = 300, blackTime = 300;
@@ -229,7 +297,7 @@
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.08);
-            } else if (type === 'blocked') { // صوت النقر على قطعة لا تتحرك
+            } else if (type === 'blocked') {
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(120, audioCtx.currentTime);
                 gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
@@ -280,6 +348,7 @@
             }
         }
 
+        // تطبيق تأثير الكش والكش مات على الملك وعلى القطع المهاجمة
         function highlightCheckEffects() {
             if (!game.in_check() && !game.in_checkmate()) return;
 
@@ -287,6 +356,7 @@
             var kingSquare = null;
             var boardState = game.board();
 
+            // البحث عن موضع الملك المعرض للكش
             for (var r = 0; r < 8; r++) {
                 for (var c = 0; c < 8; c++) {
                     var p = boardState[r][c];
@@ -297,6 +367,7 @@
                 }
             }
 
+            // البحث عن القطع التي تهدد الملك مباشرة
             var enemyColor = turn === 'w' ? 'b' : 'w';
             var attackerSquares = [];
             
@@ -323,7 +394,7 @@
         }
 
         function onSquareClick(square) {
-            if (game.game_over()) return;
+            if (game.game_over() || isAiThinking) return;
 
             var mode = $('#game-mode').val();
             var userColor = $('#player-color').val();
@@ -334,7 +405,7 @@
                 if (userColor === 'black' && game.turn() === 'w') return;
             }
 
-            // إلغاء التحديد بالنقر على نفس القطعة مجدداً
+            // إلغاء التحديد فوراً عند الضغط مجدداً على نفس القطعة
             if (selectedSquare === square) {
                 selectedSquare = null;
                 removeHighlights();
@@ -346,7 +417,7 @@
                 if (piece && piece.color === game.turn()) {
                     var moves = game.moves({ square: square });
                     if (moves.length === 0) {
-                        playSound('blocked'); // صوت عند عدم وجود حركات
+                        playSound('blocked'); // صوت عند النقر على قطعة لا تستطيع التحرك
                         return;
                     }
                     selectedSquare = square;
@@ -395,7 +466,8 @@
 
                 var mode = $('#game-mode').val();
                 if (mode === 'ai' && !game.game_over()) {
-                    window.setTimeout(makeAiMove, 350);
+                    isAiThinking = true;
+                    window.setTimeout(makeAiMove, 250);
                 }
             } else {
                 var piece = game.get(moveObj.to);
@@ -408,36 +480,96 @@
             }
         }
 
+        // ================= الذكاء الاصطناعي الاحترافي (Minimax with Alpha-Beta) =================
+        function getPieceValue(piece, x, y) {
+            if (!piece) return 0;
+            var val = 0;
+            if (piece.type === 'p') val = 10 + (piece.color === 'w' ? pawnEvalWhite[y][x] : pawnEvalBlack[y][x]);
+            else if (piece.type === 'r') val = 50 + (piece.color === 'w' ? rookEvalWhite[y][x] : rookEvalBlack[y][x]);
+            else if (piece.type === 'n') val = 30 + knightEval[y][x];
+            else if (piece.type === 'b') val = 30 + (piece.color === 'w' ? bishopEvalWhite[y][x] : bishopEvalBlack[y][x]);
+            else if (piece.type === 'q') val = 90 + evalQueen[y][x];
+            else if (piece.type === 'k') val = 900 + (piece.color === 'w' ? kingEvalWhite[y][x] : kingEvalBlack[y][x]);
+
+            return piece.color === 'w' ? val : -val;
+        }
+
         function evaluateBoard(gameInstance) {
-            var total = 0;
+            var totalEvaluation = 0;
             var boardState = gameInstance.board();
             for (var r = 0; r < 8; r++) {
                 for (var c = 0; c < 8; c++) {
-                    var p = boardState[r][c];
-                    if (p) total += (p.color === 'w' ? pieceValues[p.type] : -pieceValues[p.type]);
+                    totalEvaluation += getPieceValue(boardState[r][c], r, c);
                 }
             }
-            return total;
+            return totalEvaluation;
+        }
+
+        function minimax(gameInstance, depth, alpha, beta, isMaximizing) {
+            if (depth === 0 || gameInstance.game_over()) {
+                return evaluateBoard(gameInstance);
+            }
+
+            var moves = gameInstance.moves({ verbose: true });
+
+            if (isMaximizing) {
+                var maxEval = -9999;
+                for (var i = 0; i < moves.length; i++) {
+                    gameInstance.move(moves[i]);
+                    var evalVal = minimax(gameInstance, depth - 1, alpha, beta, false);
+                    gameInstance.undo();
+                    maxEval = Math.max(maxEval, evalVal);
+                    alpha = Math.max(alpha, evalVal);
+                    if (beta <= alpha) break;
+                }
+                return maxEval;
+            } else {
+                var minEval = 9999;
+                for (var i = 0; i < moves.length; i++) {
+                    gameInstance.move(moves[i]);
+                    var evalVal = minimax(gameInstance, depth - 1, alpha, beta, true);
+                    gameInstance.undo();
+                    minEval = Math.min(minEval, evalVal);
+                    beta = Math.min(beta, evalVal);
+                    if (beta <= alpha) break;
+                }
+                return minEval;
+            }
         }
 
         function makeAiMove() {
             var possibleMoves = game.moves({ verbose: true });
-            if (possibleMoves.length === 0 || game.game_over()) return;
+            if (possibleMoves.length === 0 || game.game_over()) {
+                isAiThinking = false;
+                return;
+            }
 
             var bestMove = null;
-            var bestValue = game.turn() === 'b' ? 99999 : -99999;
+            var isAiWhite = game.turn() === 'w';
+            var bestValue = isAiWhite ? -99999 : 99999;
 
             for (var i = 0; i < possibleMoves.length; i++) {
                 var move = possibleMoves[i];
                 game.move(move);
-                var boardValue = evaluateBoard(game);
-                if (game.in_checkmate()) boardValue = game.turn() === 'b' ? 999999 : -999999;
+
+                var boardValue = minimax(game, 2, -100000, 100000, !isAiWhite);
+                
+                if (game.in_checkmate()) {
+                    boardValue = isAiWhite ? 999999 : -999999;
+                }
+
                 game.undo();
 
-                if (game.turn() === 'b') {
-                    if (boardValue < bestValue) { bestValue = boardValue; bestMove = move; }
+                if (isAiWhite) {
+                    if (boardValue > bestValue) {
+                        bestValue = boardValue;
+                        bestMove = move;
+                    }
                 } else {
-                    if (boardValue > bestValue) { bestValue = boardValue; bestMove = move; }
+                    if (boardValue < bestValue) {
+                        bestValue = boardValue;
+                        bestMove = move;
+                    }
                 }
             }
 
@@ -450,9 +582,11 @@
             board.position(game.fen());
             playSound('move');
             removeHighlights();
+            isAiThinking = false;
             updateStatus();
         }
 
+        // ================= العدادات والمؤقت =================
         function startTimer() {
             clearInterval(timerInterval);
             timerInterval = setInterval(function () {
@@ -486,6 +620,7 @@
         function updateStatus() {
             var status = '';
             var moveColor = game.turn() === 'b' ? 'الأسود' : 'الأبيض';
+            
             highlightCheckEffects();
 
             if (game.in_checkmate()) {
@@ -527,13 +662,13 @@
                 if ((winner === 'w' && userColor === 'white') || (winner === 'b' && userColor === 'black')) {
                     $card.addClass('border-win'); title = '🎉 فوز بالوقت!'; body = 'لقد فزت بالمباراة بنفاذ وقت الخصم!'; playSound('win');
                 } else {
-                    $card.addClass('border-loss'); title = 'خسارة بالوقت!'; body = 'لقد خسرت المباراة بسبب انتهاد وقتك!'; playSound('loss');
+                    $card.addClass('border-loss'); title = 'خسارة بالوقت!'; body = 'لقد خسرت المباراة بسبب انتهاء وقتك!'; playSound('loss');
                 }
             } else if (mode === 'ai') {
                 if ((winner === 'white' && userColor === 'white') || (winner === 'black' && userColor === 'black')) {
                     $card.addClass('border-win');
                     title = '🎉 لقد كسبت المباراه!';
-                    body = 'لقد خسرت بعد ' + totalMoves + ' نقلة بـ كش مات (انتصار ساحق ومستحق!)';
+                    body = 'لقد فزت بعد ' + totalMoves + ' نقلة بـ كش مات (انتصار ساحق ومستحق!)';
                     playSound('win');
                 } else {
                     $card.addClass('border-loss');
@@ -573,6 +708,7 @@
             game.reset();
             selectedSquare = null;
             pendingMove = null;
+            isAiThinking = false;
             removeHighlights();
 
             var mins = parseInt($('#time-limit').val()) || 5;
@@ -598,7 +734,8 @@
             });
 
             if (mode === 'ai' && userColor === 'black') {
-                window.setTimeout(makeAiMove, 400);
+                isAiThinking = true;
+                window.setTimeout(makeAiMove, 300);
             }
             updateStatus();
         }

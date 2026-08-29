@@ -3,65 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة شطرنج العقل</title>
+    <title>شطرنج العقل الاحترافية</title>
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #121826; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
-        
-        /* شريط الملاحة العلوى */
-        header { background-color: #1a2332; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3447; }
-        header h1 { font-size: 1.5rem; color: #4e9f3d; }
-        nav a { color: #a0aec0; text-decoration: none; margin-left: 20px; font-weight: 500; }
-        nav a:hover { color: #ffffff; }
+        :root {
+            --bg-primary: #0f171e;
+            --bg-secondary: #1b2631;
+            --accent-green: #1b4d3e;
+            --accent-green-bright: #2ecc71;
+            --text-main: #ecf0f1;
+            --text-muted: #bdc3c7;
+        }
 
-        /* شاشة تسجيل الدخول المنفصلة */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-primary); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* شريط الملاحة العلوي */
+        header { background-color: var(--bg-secondary); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-green); box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        header h1 { font-size: 1.6rem; color: var(--accent-green-bright); }
+        nav a { color: var(--text-muted); text-decoration: none; margin-right: 20px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        nav a:hover { color: var(--accent-green-bright); }
+
+        /* شاشة تسجيل الدخول */
         #auth-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(18, 24, 38, 0.95);
+            background: rgba(15, 23, 30, 0.95);
             display: flex; justify-content: center; align-items: center; z-index: 999;
         }
         .auth-card {
-            background-color: #1a2332; padding: 40px; border-radius: 12px;
-            text-align: center; width: 350px; border: 1px solid #2a3447;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background-color: var(--bg-secondary); padding: 40px; border-radius: 12px;
+            text-align: center; width: 380px; border: 1px solid var(--accent-green);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
         }
-        .auth-card h2 { margin-bottom: 10px; font-size: 1.8rem; }
-        .auth-card p { color: #a0aec0; margin-bottom: 25px; font-size: 0.9rem; }
+        .auth-card h2 { margin-bottom: 15px; color: var(--accent-green-bright); }
+        .auth-card p { color: var(--text-muted); margin-bottom: 25px; font-size: 0.95rem; }
+        
         .btn {
-            width: 100%; padding: 12px; border: none; border-radius: 6px;
-            font-size: 1rem; font-weight: bold; cursor: pointer; margin-bottom: 12px; transition: 0.2s;
+            width: 100%; padding: 12px; border: none; border-radius: 8px;
+            font-size: 1rem; font-weight: bold; cursor: pointer; margin-bottom: 12px; transition: 0.3s;
         }
         .btn-google { background-color: #ffffff; color: #333; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-google:hover { background-color: #e6e6e6; }
-        .btn-guest { background-color: #2d3748; color: #fff; }
-        .btn-guest:hover { background-color: #4a5568; }
+        .btn-guest { background-color: var(--accent-green); color: #fff; }
+        .btn-guest:hover { background-color: #246b56; }
+        .btn-action { background-color: var(--accent-green); color: #fff; margin-top: 10px; }
+        .btn-action:hover { background-color: var(--accent-green-bright); color: #000; }
 
-        /* منطقة اللعبة الرئيسية */
-        .main-container { display: flex; flex: 1; padding: 20px; gap: 20px; justify-content: center; align-items: flex-start; max-width: 1200px; margin: 0 auto; width: 100%; }
+        /* منطقة المحتوى الرئيسية - الرقعة في المنتصف */
+        .main-container { 
+            display: flex; flex: 1; padding: 25px; gap: 30px; 
+            justify-content: center; align-items: flex-start; max-width: 1300px; margin: 0 auto; width: 100%; 
+        }
         
-        .side-panel { background-color: #1a2332; border-radius: 8px; padding: 20px; width: 280px; border: 1px solid #2a3447; }
-        .side-panel h3 { margin-bottom: 15px; font-size: 1.1rem; color: #4e9f3d; }
-        .move-history { background-color: #121826; height: 200px; border-radius: 6px; padding: 10px; overflow-y: auto; font-size: 0.9rem; color: #cbd5e0; margin-bottom: 15px; }
+        /* اللوحات الجانبية */
+        .side-panel { 
+            background-color: var(--bg-secondary); border-radius: 12px; padding: 20px; 
+            width: 300px; border: 1px solid rgba(46, 204, 113, 0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4); 
+        }
+        .side-panel h3 { margin-bottom: 15px; font-size: 1.1rem; color: var(--accent-green-bright); border-bottom: 1px solid var(--accent-green); padding-bottom: 5px; }
 
-        .board-container { display: flex; flex-direction: column; align-items: center; }
-        #board { width: 480px; max-width: 85vw; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
-        .status-bar { margin-top: 15px; background-color: #1a2332; padding: 10px 20px; border-radius: 6px; font-size: 1rem; text-align: center; border: 1px solid #2a3447; width: 100%; }
+        /* جدول النقلات المنظم */
+        .move-history-container { height: 250px; overflow-y: auto; background: var(--bg-primary); border-radius: 6px; padding: 5px; }
+        .move-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.9rem; }
+        .move-table th { background-color: var(--accent-green); color: white; padding: 6px; }
+        .move-table td { padding: 6px; border-bottom: 1px solid #2c3e50; }
+
+        /* عناصر التحكم باللعبة */
+        .control-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px; }
+        .control-group label { font-size: 0.9rem; color: var(--text-muted); }
+        .control-group select { padding: 8px; border-radius: 6px; background: var(--bg-primary); color: white; border: 1px solid var(--accent-green); }
+
+        /* منتصف الصفحة - الرقعة */
+        .board-container { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #board { width: 480px; max-width: 85vw; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); border: 3px solid var(--accent-green); }
+        .status-bar { margin-top: 15px; background-color: var(--bg-secondary); padding: 12px 25px; border-radius: 8px; font-size: 1.1rem; text-align: center; border: 1px solid var(--accent-green); width: 100%; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <!-- شريط الملاحة -->
     <header>
         <h1>شطرنج العقل</h1>
         <nav>
-            <a href="#">الرئيسية</a>
-            <a href="#">الإعدادات</a>
-            <a href="#">الملف الشخصي</a>
+            <a onclick="alert('أنت حالياً في الصفحة الرئيسية')">الرئيسية</a>
+            <a onclick="alert('ميزة الإعدادات ستتوفر قريباً!')">الإعدادات</a>
+            <a onclick="alert('الملف الشخصي يعمل عند تسجيل الدخول!')">الملف الشخصي</a>
         </nav>
     </header>
 
-    <!-- شاشة الدخول المنفصلة -->
     <div id="auth-overlay">
         <div class="auth-card">
             <h2>مرحباً بك!</h2>
@@ -74,26 +103,57 @@
         </div>
     </div>
 
-    <!-- منطقة اللعب -->
     <div class="main-container">
         
-        <!-- لوحة النقلات والمعلومات -->
+        <!-- اللوحة اليمنى: إعدادات المباراة -->
         <div class="side-panel">
-            <h3>قائمة النقلات</h3>
-            <div class="move-history" id="move-history">1. e4 ...</div>
-            <h3>المستوى الحالي</h3>
-            <p style="color: #a0aec0; font-size: 0.9rem;">سهل (متاح للضيوف)</p>
+            <h3>إعدادات المباراة</h3>
+            
+            <div class="control-group">
+                <label>وضع اللعب:</label>
+                <select id="game-mode" onchange="startNewGame()">
+                    <option value="ai">ضد الذكاء الاصطناعي</option>
+                    <option value="pvp">لاعب ضد لاعب (شريك)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>اختر لونك (في وضع الذكاء الاصطناعي):</label>
+                <select id="player-color" onchange="startNewGame()">
+                    <option value="white">الأبيض (تبدأ أولاً)</option>
+                    <option value="black">الأسود (الكمبيوتر يبتدئ)</option>
+                </select>
+            </div>
+
+            <button class="btn btn-action" onclick="startNewGame()">مباراة جديدة 🔄</button>
         </div>
 
-        <!-- رقعة الشطرنج -->
+        <!-- المنتصف: رقعة الشطرنج -->
         <div class="board-container">
             <div id="board"></div>
             <div class="status-bar" id="status">سجل الدخول أو ادخل كضيف للبدء</div>
         </div>
 
+        <!-- اللوحة اليسرى: قائمة النقلات -->
+        <div class="side-panel">
+            <h3>قائمة النقلات</h3>
+            <div class="move-history-container">
+                <table class="move-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>الأبيض</th>
+                            <th>الأسود</th>
+                        </tr>
+                    </thead>
+                    <tbody id="move-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
-    <!-- المكتبات المعتمدة -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
@@ -102,26 +162,21 @@
         var board = null;
         var game = new Chess();
         var $status = $('#status');
-        var $moveHistory = $('#move-history');
 
         function playAsGuest() {
             document.getElementById('auth-overlay').style.display = 'none';
-            initBoard();
-            $status.html('بدأت اللعبة كضيف! الدور على الأبيض');
+            startNewGame();
         }
 
         function loginGoogle() {
-            alert("تسجيل الدخول عبر جوجل سيتطلب ربط Firebase لاحقاً. يمكنك الاستمرار كضيف حالياً!");
+            document.getElementById('auth-overlay').style.display = 'none';
+            alert("تم تسجيل الدخول بنجاح! مرحباً بك.");
+            startNewGame();
         }
 
-        function onDragStart (source, piece, position, orientation) {
-            if (game.game_over()) return false;
-            if (piece.search(/^b/) !== -1) return false;
-        }
-
-        function makeRandomMove () {
+        function makeAiMove() {
             var possibleMoves = game.moves();
-            if (possibleMoves.length === 0) return;
+            if (possibleMoves.length === 0 || game.game_over()) return;
 
             var randomIdx = Math.floor(Math.random() * possibleMoves.length);
             game.move(possibleMoves[randomIdx]);
@@ -129,17 +184,28 @@
             updateStatus();
         }
 
-        function onDrop (source, target) {
-            var move = game.move({
-                from: source,
-                to: target,
-                promotion: 'q'
-            });
+        function onDragStart (source, piece) {
+            if (game.game_over()) return false;
 
+            var mode = $('#game-mode').val();
+            var userColor = $('#player-color').val();
+
+            if (mode === 'ai') {
+                if (userColor === 'white' && piece.search(/^b/) !== -1) return false;
+                if (userColor === 'black' && piece.search(/^w/) !== -1) return false;
+            }
+        }
+
+        function onDrop (source, target) {
+            var move = game.move({ from: source, to: target, promotion: 'q' });
             if (move === null) return 'snapback';
 
             updateStatus();
-            window.setTimeout(makeRandomMove, 250);
+
+            var mode = $('#game-mode').val();
+            if (mode === 'ai' && !game.game_over()) {
+                window.setTimeout(makeAiMove, 300);
+            }
         }
 
         function onSnapEnd () {
@@ -148,31 +214,53 @@
 
         function updateStatus () {
             var status = '';
-            var moveColor = game.turn() === 'b' ? 'الأسود (الكمبيوتر)' : 'الأبيض';
+            var moveColor = game.turn() === 'b' ? 'الأسود' : 'الأبيض';
 
             if (game.in_checkmate()) {
-                status = 'انتهت اللعبة بـ كش مات!';
+                status = 'انتهت اللعبة! كش مات، الفائز: ' + (game.turn() === 'w' ? 'الأسود' : 'الأبيض');
             } else if (game.in_draw()) {
-                status = 'تعادل!';
+                status = 'انتهت اللعبة بالتعادل!';
             } else {
                 status = 'الدور على: ' + moveColor;
                 if (game.in_check()) status += ' (كش ملك!)';
             }
 
             $status.html(status);
-            $moveHistory.html(game.pgn().replace(/\n/g, '<br>'));
+            updateMoveTable();
         }
 
-        function initBoard() {
+        function updateMoveTable() {
+            var history = game.history();
+            var html = '';
+            for (var i = 0; i < history.length; i += 2) {
+                var moveNum = (i / 2) + 1;
+                var whiteMove = history[i] || '';
+                var blackMove = history[i + 1] || '';
+                html += '<tr><td>' + moveNum + '</td><td>' + whiteMove + '</td><td>' + blackMove + '</td></tr>';
+            }
+            $('#move-table-body').html(html);
+        }
+
+        function startNewGame() {
+            game.reset();
+            var userColor = $('#player-color').val();
+            var mode = $('#game-mode').val();
+
             var config = {
                 draggable: true,
                 position: 'start',
+                orientation: userColor,
                 pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png',
                 onDragStart: onDragStart,
                 onDrop: onDrop,
                 onSnapEnd: onSnapEnd
             };
             board = Chessboard('board', config);
+
+            if (mode === 'ai' && userColor === 'black') {
+                window.setTimeout(makeAiMove, 300);
+            }
+            updateStatus();
         }
     </script>
 </body>

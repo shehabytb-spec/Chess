@@ -3,45 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة الشطرنج</title>
-    <!-- مكتبة أنماط رقعة الشطرنج -->
+    <title>لعبة شطرنج العقل</title>
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1e1e2e;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #121826; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* شريط الملاحة العلوى */
+        header { background-color: #1a2332; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a3447; }
+        header h1 { font-size: 1.5rem; color: #4e9f3d; }
+        nav a { color: #a0aec0; text-decoration: none; margin-left: 20px; font-weight: 500; }
+        nav a:hover { color: #ffffff; }
+
+        /* شاشة تسجيل الدخول المنفصلة */
+        #auth-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(18, 24, 38, 0.95);
+            display: flex; justify-content: center; align-items: center; z-index: 999;
         }
-        h1 {
-            margin-bottom: 10px;
+        .auth-card {
+            background-color: #1a2332; padding: 40px; border-radius: 12px;
+            text-align: center; width: 350px; border: 1px solid #2a3447;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        #board {
-            width: 400px;
-            max-width: 90vw;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border-radius: 8px;
-            overflow: hidden;
+        .auth-card h2 { margin-bottom: 10px; font-size: 1.8rem; }
+        .auth-card p { color: #a0aec0; margin-bottom: 25px; font-size: 0.9rem; }
+        .btn {
+            width: 100%; padding: 12px; border: none; border-radius: 6px;
+            font-size: 1rem; font-weight: bold; cursor: pointer; margin-bottom: 12px; transition: 0.2s;
         }
-        .status {
-            margin-top: 15px;
-            font-size: 1.1rem;
-            color: #a6adc8;
-        }
+        .btn-google { background-color: #ffffff; color: #333; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-google:hover { background-color: #e6e6e6; }
+        .btn-guest { background-color: #2d3748; color: #fff; }
+        .btn-guest:hover { background-color: #4a5568; }
+
+        /* منطقة اللعبة الرئيسية */
+        .main-container { display: flex; flex: 1; padding: 20px; gap: 20px; justify-content: center; align-items: flex-start; max-width: 1200px; margin: 0 auto; width: 100%; }
+        
+        .side-panel { background-color: #1a2332; border-radius: 8px; padding: 20px; width: 280px; border: 1px solid #2a3447; }
+        .side-panel h3 { margin-bottom: 15px; font-size: 1.1rem; color: #4e9f3d; }
+        .move-history { background-color: #121826; height: 200px; border-radius: 6px; padding: 10px; overflow-y: auto; font-size: 0.9rem; color: #cbd5e0; margin-bottom: 15px; }
+
+        .board-container { display: flex; flex-direction: column; align-items: center; }
+        #board { width: 480px; max-width: 85vw; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+        .status-bar { margin-top: 15px; background-color: #1a2332; padding: 10px 20px; border-radius: 6px; font-size: 1rem; text-align: center; border: 1px solid #2a3447; width: 100%; }
     </style>
 </head>
 <body>
 
-    <h1>لعبة الشطرنج</h1>
-    <div id="board"></div>
-    <div class="status" id="status">جاري تحضير اللعبة...</div>
+    <!-- شريط الملاحة -->
+    <header>
+        <h1>شطرنج العقل</h1>
+        <nav>
+            <a href="#">الرئيسية</a>
+            <a href="#">الإعدادات</a>
+            <a href="#">الملف الشخصي</a>
+        </nav>
+    </header>
 
-    <!-- استدعاء مكتبات الشطرنج والجافاسكريبت -->
+    <!-- شاشة الدخول المنفصلة -->
+    <div id="auth-overlay">
+        <div class="auth-card">
+            <h2>مرحباً بك!</h2>
+            <p>اختر طريقة الدخول لبدء اللعب</p>
+            <button class="btn btn-google" onclick="loginGoogle()">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
+                تسجيل الدخول بحساب جوجل
+            </button>
+            <button class="btn btn-guest" onclick="playAsGuest()">الاستمرار كضيف</button>
+        </div>
+    </div>
+
+    <!-- منطقة اللعب -->
+    <div class="main-container">
+        
+        <!-- لوحة النقلات والمعلومات -->
+        <div class="side-panel">
+            <h3>قائمة النقلات</h3>
+            <div class="move-history" id="move-history">1. e4 ...</div>
+            <h3>المستوى الحالي</h3>
+            <p style="color: #a0aec0; font-size: 0.9rem;">سهل (متاح للضيوف)</p>
+        </div>
+
+        <!-- رقعة الشطرنج -->
+        <div class="board-container">
+            <div id="board"></div>
+            <div class="status-bar" id="status">سجل الدخول أو ادخل كضيف للبدء</div>
+        </div>
+
+    </div>
+
+    <!-- المكتبات المعتمدة -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
@@ -50,17 +102,25 @@
         var board = null;
         var game = new Chess();
         var $status = $('#status');
+        var $moveHistory = $('#move-history');
+
+        function playAsGuest() {
+            document.getElementById('auth-overlay').style.display = 'none';
+            initBoard();
+            $status.html('بدأت اللعبة كضيف! الدور على الأبيض');
+        }
+
+        function loginGoogle() {
+            alert("تسجيل الدخول عبر جوجل سيتطلب ربط Firebase لاحقاً. يمكنك الاستمرار كضيف حالياً!");
+        }
 
         function onDragStart (source, piece, position, orientation) {
-            // لا تسمح بتحريك القطع إذا انتهت اللعبة أو للون الأسود
             if (game.game_over()) return false;
             if (piece.search(/^b/) !== -1) return false;
         }
 
         function makeRandomMove () {
             var possibleMoves = game.moves();
-
-            // إذا انتهت اللعبة
             if (possibleMoves.length === 0) return;
 
             var randomIdx = Math.floor(Math.random() * possibleMoves.length);
@@ -70,20 +130,16 @@
         }
 
         function onDrop (source, target) {
-            // التحقق من صحة الحركة
             var move = game.move({
                 from: source,
                 to: target,
-                promotion: 'q' // الترقية للوزير تلقائياً للتبسيط
+                promotion: 'q'
             });
 
-            // حركة غير قانونية
             if (move === null) return 'snapback';
 
             updateStatus();
-
-            // رد الكمبيوتر بحركة عشوائية بعد نصف ثانية (المستوى المبتدئ)
-            window.setTimeout(makeRandomMove, 500);
+            window.setTimeout(makeRandomMove, 250);
         }
 
         function onSnapEnd () {
@@ -92,36 +148,32 @@
 
         function updateStatus () {
             var status = '';
-
-            var moveColor = 'الأبيض';
-            if (game.turn() === 'b') {
-                moveColor = 'الأسود (الكمبيوتر)';
-            }
+            var moveColor = game.turn() === 'b' ? 'الأسود (الكمبيوتر)' : 'الأبيض';
 
             if (game.in_checkmate()) {
-                status = 'انتهت اللعبة، كش مات! الفائز: ' + (game.turn() === 'w' ? 'الأسود' : 'الأبيض');
+                status = 'انتهت اللعبة بـ كش مات!';
             } else if (game.in_draw()) {
-                status = 'انتهت اللعبة بالتعادل!';
+                status = 'تعادل!';
             } else {
                 status = 'الدور على: ' + moveColor;
-                if (game.in_check()) {
-                    status += '، (كش ملك!)';
-                }
+                if (game.in_check()) status += ' (كش ملك!)';
             }
 
             $status.html(status);
+            $moveHistory.html(game.pgn().replace(/\n/g, '<br>'));
         }
 
-        var config = {
-            draggable: true,
-            position: 'start',
-            onDragStart: onDragStart,
-            onDrop: onDrop,
-            onSnapEnd: onSnapEnd
-        };
-        board = Chessboard('board', config);
-
-        updateStatus();
+        function initBoard() {
+            var config = {
+                draggable: true,
+                position: 'start',
+                pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png',
+                onDragStart: onDragStart,
+                onDrop: onDrop,
+                onSnapEnd: onSnapEnd
+            };
+            board = Chessboard('board', config);
+        }
     </script>
 </body>
 </html>
